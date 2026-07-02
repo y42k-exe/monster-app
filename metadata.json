@@ -1,0 +1,6 @@
+{
+  "name": "Monster Tracker",
+  "description": "A high-fidelity caffeine and Monster Energy drink logger to track consumption, flavor statistics, and daily limits.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
