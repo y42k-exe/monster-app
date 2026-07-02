@@ -1,0 +1,37 @@
+name: Android APK Builder
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+    
+    - name: Set up Java 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+
+    - name: Grant Execute Permission for Gradle
+      # This looks for gradlew even if it's inside a subfolder
+      run: find . -name "gradlew" -exec chmod +x {} +
+      
+    - name: Build Debug APK
+      # This finds where gradlew is and runs it from there
+      run: |
+        GRADLEW_PATH=$(find . -name "gradlew" | head -n 1)
+        DIR_PATH=$(dirname "$GRADLEW_PATH")
+        cd "$DIR_PATH"
+        ./gradlew assembleDebug
+
+    - name: Upload APK Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: MyGeminiApp-APK
+        path: "**/build/outputs/apk/debug/app-debug.apk"
